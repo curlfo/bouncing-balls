@@ -1,0 +1,33 @@
+#:kivy 1.0.9
+
+<BouncingBall>:
+    canvas:
+        Color:
+            rgba: self.color
+        Ellipse:
+            pos: self.pos
+            size: (self.diameter, self.diameter)
+
+<BouncingGame>:
+
+    ball1: bouncing_ball1
+    ball2: bouncing_ball2
+    ball3: bouncing_ball3
+    ball4: bouncing_ball4
+    ball5: bouncing_ball5
+
+    BouncingBall:
+        id: bouncing_ball1
+
+    BouncingBall:
+        id: bouncing_ball2
+
+    BouncingBall:
+        id: bouncing_ball3
+
+    BouncingBall:
+        id: bouncing_ball4
+
+    BouncingBall:
+        id: bouncing_ball5
+
