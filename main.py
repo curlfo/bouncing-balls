@@ -6,14 +6,10 @@ from kivy.properties import (
 from kivy.vector import Vector
 from kivy.clock import Clock
 from kivy.config import Config
-from kivy.graphics import Color
 from random import randint, uniform
 from math import sqrt
-import numpy as np
 
 Config.set('graphics', 'resizable', False)
-# Config.set('graphics', 'width', '800')
-# Config.set('graphics', 'height', '600')
 
 DELTA_TIME = 1.0 / 60.0
 RADIUS = (20, 30, 40, 50)
@@ -51,35 +47,6 @@ class BouncingBall(Widget):
             # print(distance)
 
         return distance <= (self.radius + other.radius)
-
-    def change_velocity(self, other):
-        # m1, m2 = 2700 * np.pi * 4.0 * self.radius**3 / 3.0, 2700 * np.pi * 4.0 * other.radius**3 / 3.0
-        m1, m2 = self.radius**3, other.radius**3
-        m = m1 + m2
-
-        vx1, vx2 = self.velocity_x, other.velocity_x
-        vy1, vy2 = self.velocity_y, other.velocity_y
-
-        rx1, rx2 = self.center_x, other.center_x
-        ry1, ry2 = self.center_y, other.center_y
-
-        dx = np.linalg.norm(rx1 - rx2)**2
-        dy = np.linalg.norm(ry1 - ry2) ** 2
-
-        ux1 = (2 * m2 * vx2 + (m1 - m2) * vx1) / m
-        ux2 = (2 * m1 * vx1 + (m1 - m2) * vx2) / m
-        uy1 = (2 * m2 * vy2 + (m1 - m2) * vy1) / m
-        uy2 = (2 * m1 * vy1 + (m1 - m2) * vy2) / m
-
-        # ux1 = vx1 - (2 * m2 / m) * (np.dot(vx1 - vx2, rx1 - rx2) / dx) * (rx1 - rx2)
-        # ux2 = vx2 - (2 * m1 / m) * (np.dot(vx2 - vx1, rx2 - rx1) / dx) * (rx2 - rx1)
-        # uy1 = vy1 - (2 * m2 / m) * (np.dot(vy1 - vy2, ry1 - ry2) / dy) * (ry1 - ry2)
-        # uy2 = vy2 - (2 * m1 / m) * (np.dot(vy2 - vy1, ry2 - ry1) / dy) * (ry2 - ry1)
-
-        self.velocity_x = ux1
-        other.velocity_x = ux2
-        self.velocity_y = uy1
-        other.velocity_y = uy2
 
 
 class BouncingGame(Widget):
