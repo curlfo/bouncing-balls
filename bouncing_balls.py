@@ -1,3 +1,5 @@
+import itertools
+
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.properties import (NumericProperty, ReferenceListProperty, ObjectProperty)
@@ -20,13 +22,10 @@ COLORS = ((0.98, 0.46, 0.73, 0.8), (0.68, 0.44, 0.80, 0.8), (0.39, 0.37, 0.72, 0
 WINDOW_SIZE = Window.size
 RADIUS = (20, 30, 40, 50)
 MAX_RADIUS = max(RADIUS)
-START_COORDS_X = [MAX_RADIUS + i for i in range(0, WINDOW_SIZE[0], 100)]
-START_COORDS_Y = [MAX_RADIUS + i for i in range(0, WINDOW_SIZE[1], 100)]
-START_COORDS = []
-for x_coord in START_COORDS_X:
-    for y_coord in START_COORDS_Y:
-        START_COORDS.append((x_coord, y_coord))
-
+# grid of (MAX_RADIUS * 2, MAX_RADIUS * 2) size squares to choose start center point randomly (kind of)
+START_CENTER_X = [MAX_RADIUS + i for i in range(0, WINDOW_SIZE[0] - MAX_RADIUS + 1, MAX_RADIUS * 2)]
+START_CENTER_Y = [MAX_RADIUS + i for i in range(0, WINDOW_SIZE[1] - MAX_RADIUS + 1, MAX_RADIUS * 2)]
+START_CENTER = list(itertools.product(START_CENTER_X, START_CENTER_Y))
 
 class BouncingBall(Widget):
     velocity_x = NumericProperty(0)
@@ -62,10 +61,10 @@ class BouncingGame(Widget):
     balls = ReferenceListProperty(ball1, ball2, ball3, ball4, ball5)
 
     def serve_balls(self):
-        shuffle(START_COORDS)
+        shuffle(START_CENTER)
         for i, ball in enumerate(self.balls):
             ball.velocity = Vector(uniform(MIN_V, MAX_V), uniform(MIN_V, MAX_V)).rotate(randint(0, 360))
-            ball.center = Vector(START_COORDS[i])
+            ball.center = Vector(START_CENTER[i])
             ball.radius = RADIUS[randint(0, 3)]
             ball.diameter = ball.radius * 2
             ball.size = (ball.diameter, ball.diameter)
